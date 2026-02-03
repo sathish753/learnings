@@ -1,0 +1,98 @@
+linux commend 
+
+1.ssh username@servername - to connect with the server
+2.ls- to list all the file
+3.ls -al -to list all the files including hidden files
+4.ls -l index.html-To see the file permissions
+4.pwd- to see the current working directory 
+5.cd directory name- to change the directory
+6.cd /-move to root directory
+7.cd /path/of/the/directory- move to specific directory
+8.cd .. -move backward from the directory
+9.touch-to create a file
+10.touch filename{1...10}-create a multipul file with sepcified seq num
+11.touch -d tomorrow filename- create a file with tomorrow date
+12.echo "message"-its a print whatever inside the comma
+13.echo "message" > filename- t add the message to the file
+14.nano filename- to edit the file directly without any additional key
+15.ctl X+Y+Enter to save the file
+16.vim or vi filename- edit the file 
+17. :wq to save the file
+18.shred filename-to hide the content of the file(leads to perment hide no option to retrive)
+19.mkdir - create new directory
+20.cp filename destination_directory- to copy the file from one directory to another
+21.mv filename ./target directory name/filename- to move the file from one directory to another directory
+22.mv /test(source or from directory) /var/www(target path or to directory)
+22.rm filename-to remove the file from the directory
+23.rmdir directoryname- to remove directory(directory need to be empty before delecting)
+24.rm -r directoryname- to remove directory
+25.ln -s filename name_for_the_link- to create a link for the file
+26.whoami- to see the user name
+24.useradd username- to add user and give the password
+25.sudo adduser username-sudo its a admin rights commend
+26.sudo useradd username-to reverce the adduser commend(need to add some details)
+26.sudo hostnamectl set-hostname hhostname(sonarqube)-to change the hostnameof the server
+27.su username-to switch user
+28.exit- to exit from user
+29.sudo passwd username-to change the password for the user
+30.passwd -to change the password for self
+31.sudo apt update- to update the repostry
+32.sudo apt install package_name-to install package
+33.finger username-to inspact the other user
+34.man commend(finger,cat)-its shows the full useage of the commend
+35.whatis commendname(finget,cat,etc...)-its shows the quick overview of the commend
+36.which commendname(finger,etc...)-to show where the packages are stored for finger commend
+Note:all the packages are stored in the /usr/bin directory
+37.whereis commendname-its shows where all is the finger commend packages is stored
+38.wget weblink-to get the files from internet in text form 
+39.curl weblink > filename-to copy and save the file from the internet to the specified file
+40.zip filename.zip filename-its convert to zip file
+41.unzip zipfilename-to unzip the file
+42.less -to view one page at a time
+43.head filename-to view head of the doc
+44.tail filename-to view ebd of the doc
+45.cmp file1 file2 -to compare 2 files
+46.diff file1 file2-to see the excate and what is the diff is
+47.cat filename | sort- to sort the file content in A-Z
+48.find -iname nginx-To ignore case sensitivity
+48.sudo find / -name "filename"-to find the file
+49.sudo find . -type f -name ".*"-to find the hidden file
+50.find . -type f -empty- to find empty directory
+51.find . -perm /a=x - to find the executable files
+52.chmod +x filename.sh-to change the file as executable file
+53.filename.sh-to execute the file
+54.chown username filename- to give the ownership of the file 
+55.ifconfig  or ip address -to find the ip
+56.grep-to see the interface or to refere the file
+57.ip address | grep eth0-to see only the eth0 ip address
+58.cat /etc/resolv.conf- to see the DNS
+59.resolvectl status- to see the status of the DNS
+60.netstat -tulpn -its sows what are the ports that the system using
+61.ss -tuple - its sows what are the ports that the system using
+62.sudo ufw allow 80-to allow the port on the system(its used in fairwall)
+63.sudo ufw status-to see the status of the rule
+64.sude ufw enable - to enable the ufw service
+65.uname- to see the system name
+66.unmae -a -to see all the system configuration
+67.free - to see the free space of the system
+68.df -to see the available free space
+69.df -H -to see the specfic free space
+70.ps- to see the process of the system
+71.ps -aux -to see the all the process
+72.top - to see the most used user
+73.htop - to see top most
+74.kill -9 process_id- to stop the running process
+75.ps -aux | grep process_name- to show the process id,network id
+76.pkill -f nameof_the_service- to kiss the process without knowing the process id
+77.sudo systemctl stop service_name- to stop the service
+78.sudo systemctl status service_name-to see the status of the service
+79.sudo systemctl restart service_name- to restart the service
+80.history- to see the used commends
+81.sudo reboot-to reboot the system
+82.sudo shutdown- it will shutdown the system after 1min
+83.sude shutdown -h now- to shutdown system now 
+84.service --version -to find the version of the application
+85.lsb_release -a - to find version
+
+commend to remove all the files and directory which continues specific name
+sudo find / -name "*docker*" -exec rm -rf {} \;

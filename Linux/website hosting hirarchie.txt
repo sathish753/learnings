@@ -1,0 +1,18 @@
+website files
+
+testwebsite
+	index.html
+	script.js
+	styles.css
+
+move inside var/etc
+
+var
+	etc
+		www
+			testwebsite
+				index.html
+				script.js
+				styles.css
+			
+			
