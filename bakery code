@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Bakery Sales Management</title>
+    <!-- Tailwind CSS for sleek styling -->
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+    <!-- Chart.js for beautiful sales trend graphs -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body class="bg-gray-50 font-sans antialiased">
+
+    <!-- Top Navigation Bar -->
+    <nav class="bg-amber-600 text-white p-4 shadow-md">
+        <div class="container mx-auto flex justify-between items-center">
+            <h1 class="text-2xl font-bold tracking-wide">🥖 Bread & Batter OS</h1>
+            <span class="text-sm bg-amber-700 px-3 py-1 rounded-full font-medium">Live Sales Dashboard</span>
+        </div>
+    </nav>
+
+    <div class="container mx-auto p-6 max-w-7xl">
+        
+        <!-- Main Layout Grid -->
+        <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+            
+            <!-- Left Column: Log New Sale Form -->
+            <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100 h-fit">
+                <h2 class="text-xl font-bold text-gray-800 mb-4 flex items-center gap-2">
+                    🛒 Log New Sale
+                </h2>
+                <form id="salesForm" class="space-y-4">
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Select Item</label>
+                        <select id="itemSelect" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                            <option value="Tea">☕ Tea</option>
+                            <option value="Biscuit">🍪 Biscuit</option>
+                            <option value="Idly/Dosa">🥞 Idly / Dosa</option>
+                            <option value="Vada">🍩 Vada</option>
+                        </select>
+                    </div>
+                    
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Quantity Sold</label>
+                        <input type="number" id="itemQty" min="1" value="1" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+
+                    <div>
+                        <label class="block text-sm font-semibold text-gray-600 mb-1">Price per Item (₹)</label>
+                        <input type="number" id="itemPrice" min="1" value="10" class="w-full p-3 border border-gray-200 rounded-xl bg-gray-50 focus:outline-none focus:ring-2 focus:ring-amber-500">
+                    </div>
+
+                    <button type="submit" class="w-full bg-amber-600 hover:bg-amber-700 text-white font-bold py-3 px-4 rounded-xl transition duration-200 shadow-sm cursor-pointer">
+                        Add to Sales
+                    </button>
+                </form>
+            </div>
+
+            <!-- Right Column: Graphs & Analytics (Takes up 2 columns on larger screens) -->
+            <div class="lg:col-span-2 space-y-6">
+                
+                <!-- Quick Stats row -->
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-4">
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Total Revenue</p>
+                        <p id="totalRevenue" class="text-2xl font-black text-gray-800 mt-1">₹0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Items Sold</p>
+                        <p id="totalItems" class="text-2xl font-black text-gray-800 mt-1">0</p>
+                    </div>
+                    <div class="bg-white p-4 rounded-xl shadow-sm border border-gray-100 col-span-2 sm:col-span-1">
+                        <p class="text-xs font-bold text-gray-400 uppercase tracking-wider">Top Product</p>
+                        <p id="topProduct" class="text-2xl font-black text-amber-600 mt-1">-</p>
+                    </div>
+                </div>
+
+                <!-- Charts Container -->
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                    <!-- Line Chart: Trend Over Time -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 class="text-sm font-bold text-gray-700 mb-2">📈 Sales Trend (Timeline)</h3>
+                        <div class="h-64">
+                            <canvas id="trendChart"></canvas>
+                        </div>
+                    </div>
+
+                    <!-- Bar Chart: Product Comparison -->
+                    <div class="bg-white p-4 rounded-2xl shadow-sm border border-gray-100">
+                        <h3 class="text-sm font-bold text-gray-700 mb-2">📊 Volume by Item</h3>
+                        <div class="h-64">
+                            <canvas id="productChart"></canvas>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Live Sales Log Table -->
+                <div class="bg-white p-6 rounded-2xl shadow-sm border border-gray-100">
+                    <h3 class="text-lg font-bold text-gray-800 mb-3">📋 Recent Transactions</h3>
+                    <div class="overflow-x-auto max-h-60 overflow-y-auto">
+                        <table class="w-full text-left border-collapse">
+                            <thead>
+                                <tr class="border-b border-gray-100 text-gray-400 text-sm">
+                                    <th class="pb-2">Time</th>
+                                    <th class="pb-2">Item</th>
+                                    <th class="pb-2">Qty</th>
+                                    <th class="pb-2">Total Price</th>
+                                </tr>
+                            </thead>
+                            <tbody id="salesLogTable" class="text-gray-600 text-sm divide-y divide-gray-50">
+                                <!-- Dynamic rows go here -->
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+
+    <!-- Application Logic (JavaScript) -->
+    <script>
+        // Initial Mock Data so the graphs aren't blank when you open it
+        let salesData = [
+            { time: "08:00 AM", item: "Tea", qty: 15, total: 150 },
+            { time: "08:30 AM", item: "Idly/Dosa", qty: 10, total: 400 },
+            { time: "09:00 AM", item: "Vada", qty: 12, total: 180 },
+            { time: "09:30 AM", item: "Biscuit", qty: 8, total: 80 },
+            { time: "10:00 AM", item: "Tea", qty: 22, total: 220 }
+        ];
+
+        // Chart instances
+        let trendChart, productChart;
+
+        // Initialize App
+        window.addEventListener('DOMContentLoaded', () => {
+            initCharts();
+            updateDashboard();
+        });
+
+        // Set up the ChartJS configurations
+        function initCharts() {
+            // 1. Line Chart Setup
+            const ctxTrend = document.getElementById('trendChart').getContext('2d');
+            trendChart = new Chart(ctxTrend, {
+                type: 'line',
+                data: {
+                    labels: salesData.map(s => s.time),
+                    datasets: [{
+                        label: 'Sales Revenue (₹)',
+                        data: salesData.map(s => s.total),
+                        borderColor: '#d97706',
+                        backgroundColor: 'rgba(217, 119, 6, 0.1)',
+                        borderWidth: 3,
+                        fill: true,
+                        tension: 0.3
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+
+            // 2. Bar Chart Setup
+            const ctxProduct = document.getElementById('productChart').getContext('2d');
+            productChart = new Chart(ctxProduct, {
+                type: 'bar',
+                data: {
+                    labels: ['Tea', 'Biscuit', 'Idly/Dosa', 'Vada'],
+                    datasets: [{
+                        label: 'Units Sold',
+                        data: [0, 0, 0, 0],
+                        backgroundColor: ['#f59e0b', '#3b82f6', '#10b981', '#ec4899']
+                    }]
+                },
+                options: { responsive: true, maintainAspectRatio: false }
+            });
+        }
+
+        // Recalculate numbers and update UI/Charts
+        function updateDashboard() {
+            let totalRevenue = 0;
+            let totalItems = 0;
+            let itemCounts = { "Tea": 0, "Biscuit": 0, "Idly/Dosa": 0, "Vada": 0 };
+
+            // Clear table log visually and rebuild
+            const tableBody = document.getElementById('salesLogTable');
+            tableBody.innerHTML = '';
+
+            salesData.forEach(sale => {
+                totalRevenue += sale.total;
+                totalItems += sale.qty;
+                itemCounts[sale.item] += sale.qty;
+
+                // Append row to table
+                const row = `<tr>
+                    <td class="py-2">${sale.time}</td>
+                    <td class="py-2 font-medium text-gray-800">${sale.item}</td>
+                    <td class="py-2">${sale.qty}</td>
+                    <td class="py-2 font-semibold text-gray-700">₹${sale.total}</td>
+                </tr>`;
+                tableBody.insertAdjacentHTML('beforeend', row);
+            });
+
+            // Find Top Selling Product
+            let topProduct = '-';
+            let maxSales = 0;
+            for (const [item, qty] of Object.entries(itemCounts)) {
+                if (qty > maxSales) {
+                    maxSales = qty;
+                    topProduct = item;
+                }
+            }
+
+            // Update Counter Cards
+            document.getElementById('totalRevenue').innerText = '₹' + totalRevenue;
+            document.getElementById('totalItems').innerText = totalItems;
+            document.getElementById('topProduct').innerText = topProduct + ` (${maxSales})`;
+
+            // Update Charts
+            trendChart.data.labels = salesData.map(s => s.time);
+            trendChart.data.datasets[0].data = salesData.map(s => s.total);
+            trendChart.update();
+
+            productChart.data.datasets[0].data = [
+                itemCounts['Tea'],
+                itemCounts['Biscuit'],
+                itemCounts['Idly/Dosa'],
+                itemCounts['Vada']
+            ];
+            productChart.update();
+        }
+
+        // Handle Form Submission
+        document.getElementById('salesForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            const item = document.getElementById('itemSelect').value;
+            const qty = parseInt(document.getElementById('itemQty').value);
+            const price = parseFloat(document.getElementById('itemPrice').value);
+            const total = qty * price;
+
+            // Generate current timestamp (HH:MM AM/PM)
+            const now = new Date();
+            const timeString = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+
+            // Add new entry to our array
+            salesData.push({ time: timeString, item: item, qty: qty, total: total });
+
+            // Refresh UI
+            updateDashboard();
+
+            // Reset inputs gracefully
+            document.getElementById('itemQty').value = 1;
+        });
+    </script>
+</body>
+</html>
